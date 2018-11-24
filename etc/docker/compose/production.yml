@@ -1,0 +1,38 @@
+# Окружения для локальной разработки
+# Используется по умолчанию
+
+version: '3.3'
+volumes:
+  mysql_local_db:
+services:
+  nginx:
+    restart: always
+    depends_on:
+    - php
+    ports:
+    - "8012:80"
+    logging:
+      driver: "syslog"
+      options:
+        syslog-facility: "local0"
+        tag: "docker/politsturm/production/{{.Name}}"
+  php:
+    restart: always
+    volumes:
+    - ./etc/docker/services/php/env/production.ini:/usr/local/etc/php/conf.d/production.ini:ro
+    logging:
+      driver: "syslog"
+      options:
+        syslog-facility: "local0"
+        tag: "docker/politsturm/production/{{.Name}}"
+  mysql:
+    restart: always
+    volumes:
+    - /var/data/docker/politsturm/mysql/data:/var/lib/mysql
+    ports:
+    - "3309:3306"
+    logging:
+      driver: "syslog"
+      options:
+        syslog-facility: "local0"
+        tag: "docker/politsturm/production/{{.Name}}"

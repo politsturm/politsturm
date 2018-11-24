@@ -1,0 +1,25 @@
+#!/usr/bin/env python2.7
+# coding=utf-8
+
+import logging
+import os
+
+# Логирование
+FORMAT = '%(asctime)-15s %(levelname)s %(message)s'
+logging.basicConfig(format=FORMAT)
+logger = logging.getLogger('main')
+logger.setLevel(logging.DEBUG)
+
+root_dir = os.path.abspath(os.path.join(__file__, "../../.."))
+
+logger.info("Создаю символические ссылки на тему и конфиг файл")
+
+theme_symlink_source = root_dir + '/vendor/politsturm/wordpress-theme'
+theme_symlink_destination = root_dir + '/vendor/wordpress/wordpress/wp-content/themes/politsturm'
+os.system("rm -f %s" % theme_symlink_destination)
+os.system("ln -r -s %s %s" % (theme_symlink_source, theme_symlink_destination))
+
+config_symlink_source = root_dir + '/wp-config.php'
+config_symlink_destination = root_dir + '/vendor/wordpress/wordpress/wp-config.php'
+os.system("rm -f %s" % config_symlink_destination)
+os.system("ln -r -s %s %s" % (config_symlink_source, config_symlink_destination))

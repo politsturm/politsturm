@@ -1,0 +1,23 @@
+# Окружения для локальной разработки
+# Используется по умолчанию
+
+version: '3.3'
+volumes:
+  mysql_local_db:
+services:
+  nginx:
+    depends_on:
+    - php
+    ports:
+    - "8011:80"
+    volumes:
+    - ./etc/docker/services/nginx/conf.d/blocks/static_proxy_pass.conf:/etc/nginx/conf.d/blocks/static_proxy_pass.conf
+  php:
+    volumes:
+    - ./etc/docker/services/php/env/development.ini:/usr/local/etc/php/conf.d/development.ini:ro
+    - ./etc/docker/services/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
+  mysql:
+    volumes:
+    - mysql_local_db:/var/lib/mysql
+    ports:
+    - "3307:3306"

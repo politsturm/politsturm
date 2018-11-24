@@ -1,0 +1,108 @@
+#!/usr/bin/env python2.7
+# coding=utf-8
+
+from __future__ import print_function
+import os
+import sys
+import argparse
+from vendor.process import exec_command
+import logging
+from vendor.env import Environment
+
+project_dir = os.path.abspath(os.path.join(__file__, "../../../"))
+env = Environment.read(project_dir + "/.env")
+runtime_directory = os.path.join(project_dir, 'runtime')
+file_path = None
+
+# logger
+FORMAT = '%(asctime)-15s %(levelname)s %(message)s'
+logging.basicConfig(format=FORMAT)
+logger = logging.getLogger('main')
+logger.setLevel(logging.DEBUG)
+
+
+def approve_reset():
+    input = None
+    prompt = '> '
+    correct_choises = ['y', 'n']
+    while input not in correct_choises:
+        print("Вы уверены что хотите сбросить БД (" + ("/".join(correct_choises)) + ")")
+        input = raw_input(prompt).lower()
+        if input == "y":
+            return
+
+        if input == "n":
+            logger.info("Прерываю выполнение")
+            sys.exit(0)
+
+def clear_db():
+    command_template = 'docker-compose exec mysql mysqladmin -u %s -p%s drop -f %s'
+    command = command_template % ('root', env['DB_ROOT_PASSWORD'], env['DB_NAME'])
+    logger.debug(command)
+    os.system(command)
+
+    command_template = 'docker-compose exec mysql mysqladmin -u %s -p%s create -f %s'
+    command = command_template % ('root', env['DB_ROOT_PASSWORD'], env['DB_NAME'])
+    logger.debug(command)
+    os.system(command)
+
+def restore_db():
+    command_template = 'cat %s | gzip -d | docker-compose exec -T mysql mysql -D %s -u %s -p%s'
+
+    command = command_template % (file_path, env['DB_NAME'], 'root', env['DB_ROOT_PASSWORD'])
+
+    logger.debug(command)
+
+    os.system(command)
+
+def main():
+    parser = argparse.ArgumentParser(
+        description='''
+        Сбрасывает БД
+    ''',
+        formatter_class=argparse.RawTextHelpFormatter
+    )
+
+    parser.add_argument(
+        '--file',
+        help='Файл резервной копии, который использовать. Если не указан - будет выкачан',
+        default=None,
+        action='store',
+    )
+
+    parser.add_argument(
+        '--force',
+        help='Без подтверждения',
+        default=False,
+        action='store_true',
+    )
+
+    options = parser.parse_args()
+
+    global file_path
+
+    if not options.file:
+        file_path = runtime_directory + "/db_backup.tar.gz"
+        exec_command(
+            "./etc/scripts/db-backup-downloader "
+            + " --output-file " + file_path
+        )
+    else:
+        file_path = options.file
+
+    if not os.path.exists(file_path):
+        logger.critical("Файл резервной копии %s не существует" % file_path)
+        sys.exit(1)
+
+    if not options.force:
+        approve_reset()
+
+    logger.debug("Восстанавливаем БД из резервной копии %s" % file_path)
+
+    clear_db()
+
+    restore_db()
+
+
+if __name__ == '__main__':
+    main()
