@@ -83,10 +83,7 @@ def main():
 
     if not options.file:
         file_path = runtime_directory + "/db_backup.tar.gz"
-        exec_command(
-            "./etc/scripts/db-backup-downloader "
-            + " --output-file " + file_path
-        )
+        exec_command("./etc/scripts/db-backup-downloader --output-file %s" % file_path)
     else:
         file_path = options.file
 
