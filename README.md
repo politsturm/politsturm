@@ -2,9 +2,9 @@
 
 # Зависимости
 
- - docker >= 18.06
- - docker-compose >= 1.22
- - python 2.7
+ - [Docker](https://docs.docker.com/install/) 17.06.0+
+ - [docker-compose](https://docs.docker.com/compose/overview/) последняя версия
+ - [Python 3.6](https://www.python.org/)
  - [rsa ключ для доступа к шифрованным данным](./docs/gpg.md)
  - доступ к серверу с резервными копиями
 
