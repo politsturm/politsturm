@@ -20,7 +20,7 @@ def download_backup(dest_file):
     ip = env['DB_BACKUP_SERVER_IP']
     source_file = env['DB_BACKUP_PATH']
 
-    command = "scp admin@%s:%s %s" % (ip, source_file, dest_file)
+    command = "scp 'admin@%s:%s' '%s'" % (ip, source_file, dest_file)
 
     if os.path.exists(dest_file):
         logger.debug("Удаляю файл %s" % dest_file)

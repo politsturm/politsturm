@@ -47,7 +47,7 @@ def clear_db():
     os.system(command)
 
 def restore_db():
-    command_template = 'cat %s | gzip -d | docker-compose exec -T mysql mysql -D %s -u %s -p%s'
+    command_template = 'cat "%s" | gzip -d | docker-compose exec -T mysql mysql -D %s -u %s -p%s'
 
     command = command_template % (file_path, env['DB_NAME'], 'root', env['DB_ROOT_PASSWORD'])
 

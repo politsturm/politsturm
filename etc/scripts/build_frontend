@@ -17,11 +17,11 @@ theme_path = root_dir + '/vendor/politsturm/wordpress-theme'
 logger.info("Собираем статику")
 
 logger.info('Устанавливаем зависимости')
-install_dependencies = 'docker run --rm -v %s:/var/www -w /var/www %s npm i' % (theme_path, docker_image)
+install_dependencies = 'docker run --user `id -u`:`id -g` --rm -v "%s:/var/www" -w /var/www "%s" npm i' % (theme_path, docker_image)
 logger.debug(install_dependencies)
 os.system(install_dependencies)
 
 logger.info('Собираем')
-build_static = 'docker run --rm -v %s:/var/www -w /var/www %s ./node_modules/.bin/gulp' % (theme_path, docker_image)
+build_static = 'docker run --user `id -u`:`id -g` --rm -v "%s:/var/www" -w /var/www "%s" ./node_modules/.bin/gulp' % (theme_path, docker_image)
 logger.debug(build_static)
 os.system(build_static)
