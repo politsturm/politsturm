@@ -2,14 +2,8 @@ import os
 from vendor.exceptions import ExistCodeError
 
 
-def exec_command(command, suppress=False):
+def exec_command(command):
     """Выполнить команду"""
-
-    if isinstance(command, list):
-        command = ' '.join(command)
-
-    if not suppress:
-        print("Executing the command: " + str(command))
 
     cmd = os.system(command)
 
