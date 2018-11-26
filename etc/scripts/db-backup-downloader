@@ -26,7 +26,7 @@ def download_backup(dest_file):
         logger.debug("Удаляю файл %s" % dest_file)
         os.remove(dest_file)
 
-    logger.info("Пытаюсь скачать зерервную копию")
+    logger.info("Пытаюсь скачать резервную копию")
     logger.info(command)
 
     os.system(command)
