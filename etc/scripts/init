@@ -26,6 +26,8 @@ FORMAT = '%(asctime)-15s %(levelname)s %(message)s'
 logging.basicConfig(format=FORMAT)
 logger = logging.getLogger('main')
 
+def get_user_uid():
+    return subprocess.check_output(['id', '-u']).strip().decode("utf-8")
 
 def get_real_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -104,6 +106,9 @@ def generate_runtime_env_file():
 
     # Указываем IP
     result_env_data['SERVER_REAL_IP'] = get_real_ip()
+
+    # User UUID
+    result_env_data['USER_UID'] = get_user_uid()
 
     # Перезаписываем переменные из environ
     env_vars_for_override = dict((key[5:], value) for key, value in os.environ.items() if key.startswith("INIT_"))
