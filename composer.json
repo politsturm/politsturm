@@ -1,6 +1,11 @@
 {
   "name": "politsturm",
+  "type": "project",
+  "description": "Politsturm in docker",
   "repositories": [
+    {
+      "packagist.org": false
+    },
     {
       "type": "package",
       "package": {
@@ -33,9 +38,5 @@
     "wordpress/wordpress": "@stable",
     "politsturm/wordpress-theme": "@stable"
   },
-  "require-dev": {
-    "roave/security-advisories": "dev-master"
-  },
-  "description": "",
-  "type": ""
+  "require-dev": {}
 }
