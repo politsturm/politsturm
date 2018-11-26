@@ -1,7 +1,5 @@
-# coding=utf-8
 import os
-from output import message_info
-from exceptions import ExistCodeError
+from vendor.exceptions import ExistCodeError
 
 
 def exec_command(command, suppress=False):
@@ -11,7 +9,7 @@ def exec_command(command, suppress=False):
         command = ' '.join(command)
 
     if not suppress:
-        message_info("Executing the command: " + str(command))
+        print("Executing the command: " + str(command))
 
     cmd = os.system(command)
 

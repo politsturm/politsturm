@@ -1,9 +1,3 @@
-# coding=utf-8
-# !/usr/bin/env python2.7
-
-import os
-
-
 class Environment:
     LOCAL = 'Local'
     PRODUCTION = 'Production'
