@@ -34,7 +34,6 @@
   "require": {
     "wordpress/wordpress": "@stable",
     "politsturm/wordpress-theme": "@stable",
-    "politsturm/composer-wordpress-plugin": "@stable",
     "wordpress-plugin/admin-menu-editor": "1.8.5",
     "wordpress-plugin/advanced-custom-fields": "5.7.7",
     "wordpress-plugin/all-in-one-wp-security-and-firewall": "4.3.7.2",
