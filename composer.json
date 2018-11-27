@@ -42,15 +42,15 @@
     "wordpress-plugin/classic-editor": "0.5",
     "wordpress-plugin/contact-form-7": "5.0.5",
     "wordpress-plugin/custom-post-type-ui": "1.6.0",
-    "wordpress-plugin/html-on-pages": "1.1",
     "wordpress-plugin/limit-login-attempts": "1.7.1",
-    "wordpress-plugin/onesignal-free-web-push-notifications": "1.16.9",
     "wordpress-plugin/p3-profiler": "1.5.3.9",
     "wordpress-plugin/regenerate-thumbnails": "3.0.2",
     "wordpress-plugin/rustolat": "0.3",
     "wordpress-plugin/scripts-to-footerphp": "0.6.3",
     "wordpress-plugin/social-networks-auto-poster-facebook-twitter-g": "4.2.8",
-    "wordpress-plugin/wp-smushit": "2.9.1"
+    "wordpress-plugin/wp-smushit": "2.9.1",
+    "wordpress-plugin/html-on-pages": "1.1",
+    "wordpress-plugin/onesignal-free-web-push-notifications": "1.16.9"
   },
   "require-dev": {}
 }

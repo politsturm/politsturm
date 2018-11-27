@@ -41,6 +41,8 @@ try:
 
     exec_command("docker-compose up -d --force-recreate")
 
+    exec_command("./etc/scripts/create_composer_repository")
+
     exec_command("docker-compose exec php composer install --prefer-dist")
 
     exec_command("./etc/scripts/create_symlinks")
