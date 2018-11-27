@@ -17,8 +17,6 @@ current_environment = None
 env_files_src_dir = root_dir + "/etc/env"
 # Путь к результирующему env файлу
 runtime_env_file = root_dir + "/.env"
-# Runtime директрия приложения
-runtime_app_dir_path = root_dir + "/src/runtime"
 # Директория в которой хранятся docker-compose файлы
 docker_compose_files_dir = root_dir + "/etc/docker/compose"
 # Логирование
