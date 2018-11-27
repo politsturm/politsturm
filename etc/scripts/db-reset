@@ -22,16 +22,15 @@ logger.setLevel(logging.DEBUG)
 
 
 def approve_reset():
-    input = None
-    prompt = '> '
+    user_input = None
     correct_choises = ['y', 'n']
-    while input not in correct_choises:
+    while user_input not in correct_choises:
         print("Вы уверены что хотите сбросить БД (" + ("/".join(correct_choises)) + ")")
-        input = raw_input(prompt).lower()
-        if input == "y":
+        user_input = input('-->').lower()
+        if user_input == "y":
             return
 
-        if input == "n":
+        if user_input == "n":
             logger.info("Прерываю выполнение")
             sys.exit(0)
 
