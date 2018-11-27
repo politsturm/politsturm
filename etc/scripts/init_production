@@ -37,6 +37,8 @@ try:
 
     options = parser.parse_args()
 
+    # TODO запускать создание резервной копии
+
     exec_command("./etc/scripts/init --env=production")
 
     exec_command("docker-compose up -d --force-recreate")
