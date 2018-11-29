@@ -13,8 +13,6 @@ import logging
 # Корень проекта
 root_dir = os.path.abspath(os.path.join(__file__, "../../.."))
 current_environment = None
-# Директория с исходниками для env файлов
-env_files_src_dir = root_dir + "/etc/env"
 # Путь к результирующему env файлу
 runtime_env_file = root_dir + "/.env"
 # Директория в которой хранятся docker-compose файлы
