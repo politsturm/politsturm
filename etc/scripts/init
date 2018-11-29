@@ -99,8 +99,6 @@ def generate_runtime_env_file():
         raise RuntimeError("Environment file " + dist_env_file + " not found")
     result_env_data.update(Environment.read(dist_env_file))
 
-    # Сохраняем данные из секретного файла
-    result_env_data.update(get_secret_data())
 
     # Указываем IP
     result_env_data['SERVER_REAL_IP'] = get_real_ip()
