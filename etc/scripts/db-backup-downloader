@@ -4,6 +4,7 @@ import argparse
 import os
 import logging
 from vendor.env import Environment
+from vendor.process import exec_command
 
 project_dir = os.path.abspath(os.path.join(__file__, "../../../"))
 
@@ -29,7 +30,7 @@ def download_backup(dest_file):
     logger.info("Пытаюсь скачать резервную копию")
     logger.info(command)
 
-    os.system(command)
+    exec_command(command)
 
 
 def main():

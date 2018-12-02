@@ -8,6 +8,7 @@ import argparse
 from vendor.process import exec_command
 import logging
 from vendor.env import Environment
+from vendor.process import exec_command
 
 project_dir = os.path.abspath(os.path.join(__file__, "../../../"))
 env = Environment.read(project_dir + "/.env")
@@ -38,12 +39,12 @@ def clear_db():
     command_template = 'docker-compose exec mysql mysqladmin -u %s -p%s drop -f %s'
     command = command_template % ('root', env['DB_ROOT_PASSWORD'], env['DB_NAME'])
     logger.debug(command)
-    os.system(command)
+    exec_command(command)
 
     command_template = 'docker-compose exec mysql mysqladmin -u %s -p%s create -f %s'
     command = command_template % ('root', env['DB_ROOT_PASSWORD'], env['DB_NAME'])
     logger.debug(command)
-    os.system(command)
+    exec_command(command)
 
 def restore_db():
     command_template = 'cat "%s" | gzip -d | docker-compose exec -T mysql mysql -D %s -u %s -p%s'
@@ -52,7 +53,7 @@ def restore_db():
 
     logger.debug(command)
 
-    os.system(command)
+    exec_command(command)
 
 def main():
     parser = argparse.ArgumentParser(

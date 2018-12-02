@@ -2,12 +2,12 @@
 # coding=utf-8
 
 from __future__ import print_function
-
 import argparse
 import logging
 import os
 from datetime import datetime
 from vendor.exceptions import ExistCodeError
+from vendor.process import exec_command
 from vendor.process import exec_command
 
 # Логирование
@@ -50,7 +50,7 @@ try:
     exec_command("./etc/scripts/create_symlinks")
 
     if options.f:
-        os.system("./etc/scripts/build_frontend")
+        exec_command("./etc/scripts/build_frontend")
 
     print("The script work time: " + str(datetime.now() - startTime))
 except ExistCodeError:

@@ -7,6 +7,7 @@ import stat
 import subprocess
 import sys
 import argparse
+from vendor.process import exec_command
 
 root_dir = os.path.abspath(os.path.join(__file__, "../../.."))
 editor = os.getenv('EDITOR', 'nano')
@@ -58,7 +59,7 @@ try:
     stat = os.stat(tmpFile)
 
     # invoke editor
-    os.system('%s %s' % (editor, tmpFile))
+    exec_command('%s %s' % (editor, tmpFile))
 
     # see whether data has changed
     stat2 = os.stat(tmpFile)
