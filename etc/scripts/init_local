@@ -54,10 +54,10 @@ try:
     exec_command("./etc/scripts/create_symlinks")
 
     if options.r:
-        os.system("./etc/scripts/db-reset --force")
+        exec_command("./etc/scripts/db-reset --force")
 
     if options.f:
-        os.system("./etc/scripts/build_frontend")
+        exec_command("./etc/scripts/build_frontend")
 
     print("The script work time: " + str(datetime.now() - startTime))
 except ExistCodeError:
