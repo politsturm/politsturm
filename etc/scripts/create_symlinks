@@ -25,12 +25,14 @@ themes_destination_dir = wp_dir + "/wp-content/themes"
 logger.info("Создаю символическую ссылку на тему")
 theme_symlink_source = root_dir + '/vendor/politsturm/wordpress-theme'
 theme_symlink_destination = themes_destination_dir + '/politsturm'
+exec_command("rm -f '%s'" % theme_symlink_destination)
 exec_command("ln -r -f -s '%s' '%s'" % (theme_symlink_source, theme_symlink_destination))
 logger.debug("link: %s -> %s" % (theme_symlink_source, theme_symlink_destination))
 
 logger.info("Создаю символическию ссылку на конфиг файл")
 config_symlink_source = root_dir + '/wp-config.php'
 config_symlink_destination = wp_dir + '/wp-config.php'
+exec_command("rm -f '%s'" % config_symlink_destination)
 exec_command("ln -r -f -s '%s' '%s'" % (config_symlink_source, config_symlink_destination))
 logger.debug("link: %s -> %s" % (config_symlink_source, config_symlink_destination))
 
@@ -38,7 +40,8 @@ logger.info("Создаю символические ссылкы на плаг�
 for dir in os.listdir( plugins_vendor_dir ):
     plugin_from = plugins_vendor_dir + "/" + dir
     plugin_to = plugins_destination_dir + "/" + dir
-    # TODO если есть такая директория - пропускаесм. Значит плагин поставили из админки
+    # если есть такая директория - пропускаем. Значит плагин поставили из админки
+    exec_command("rm -f '%s'" % plugin_to)
     exec_command("ln -r -f -s '%s' '%s'" % (plugin_from, plugin_to))
     logger.debug("link: %s -> %s" % (plugin_from, plugin_to))
     logger.info("Создаю символические ссылки на плагин %s" % (dir))
