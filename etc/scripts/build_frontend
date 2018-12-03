@@ -23,6 +23,6 @@ logger.debug(install_dependencies)
 exec_command(install_dependencies)
 
 logger.info('Собираем')
-build_static = 'docker run --user `id -u`:`id -g` --rm -v "%s:/var/www" -w /var/www "%s" ./node_modules/.bin/gulp' % (theme_path, docker_image)
+build_static = 'docker run --user `id -u`:`id -g` --rm -v "%s:/var/www" -w /var/www "%s" ./node_modules/.bin/gulp css' % (theme_path, docker_image)
 logger.debug(build_static)
 exec_command(build_static)
