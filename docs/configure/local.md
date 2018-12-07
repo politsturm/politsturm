@@ -27,4 +27,5 @@
     Данный домен прописан в переменных окружения и используется как `WP_SITEURL` и `WP_HOME`
 
 Админка: http://politsturm.local/wp-admin/index.php
+
 Авторизация: http://politsturm.local/wp-login.php
