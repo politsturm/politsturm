@@ -21,8 +21,8 @@ services:
     build: ./etc/docker/services/php/build
     user: "${USER_UID}:0"
     volumes:
-    - ./etc/docker/services/php/php.ini:/usr/local/etc/php/php.ini:ro
-    - ./etc/docker/services/php/php-fpm.d/www.conf:/usr/local/etc/php-fpm.d/www.conf:ro
+    - ./etc/docker/services/php/php.ini:/usr/local.md/etc/php/php.ini:ro
+    - ./etc/docker/services/php/php-fpm.d/www.conf:/usr/local.md/etc/php-fpm.d/www.conf:ro
     - .:/var/www
     working_dir: /var/www
     cap_add:

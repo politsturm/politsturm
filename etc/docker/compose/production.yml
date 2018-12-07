@@ -19,7 +19,7 @@ services:
   php:
     restart: always
     volumes:
-    - ./etc/docker/services/php/env/production.ini:/usr/local/etc/php/conf.d/production.ini:ro
+    - ./etc/docker/services/php/env/production.ini:/usr/local.md/etc/php/conf.d/production.ini:ro
     logging:
       driver: "syslog"
       options:

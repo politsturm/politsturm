@@ -8,34 +8,10 @@
  - [rsa ключ для доступа к шифрованным данным](./docs/gpg.md)
  - доступ к серверу с резервными копиями
 
-## Локальное окружение
+## Настройка окружения
+* [Local](./docs/configure/local.md)
+* [Production](./docs/configure/production.md)
 
-1. Не фиксируем права доступа
-    ```bash
-    git config core.fileMode false
-    ```
-
-2. Делаем скрипты исполняемыми
-
-    ```
-    sudo chmod +x ./etc/scripts/*
-    ```
-
-3. Запускаем сборку
-    ```bash
-    ./etc/scripts/init_local -r -f
-    ```
-
-    Для просмотра обозначений ключей используем `--help`
-
-4. Настраиваем [proxy](./docs/proxy.md)
-
-5. Сайт будет доступен по адресу `http://politsturm.local`
-
-    Данный домен прописан в переменных окружения и используется как `WP_SITEURL` и `WP_HOME`
-
-Админка: http://politsturm.local/wp-admin/index.php
-Авторизация: http://politsturm.local/wp-login.php
 
 ### Шифрованные данные
 Для каждого окружения есть шифрованный файл в котором хранятся секретные данные.
