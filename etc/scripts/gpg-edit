@@ -1,0 +1,83 @@
+#!/usr/bin/python2.7
+# coding=utf-8
+import getpass
+import os
+import shutil
+import stat
+import subprocess
+import sys
+import argparse
+from vendor.process import exec_command
+
+root_dir = os.path.abspath(os.path.join(__file__, "../../.."))
+editor = os.getenv('EDITOR', 'nano')
+keyName = 'politsturm'
+
+parser = argparse.ArgumentParser(formatter_class=argparse.RawTextHelpFormatter)
+parser.add_argument(
+    'FILE',
+    help="Зашифрованный файл"
+)
+
+options = parser.parse_args()
+
+dataFile = options.FILE
+
+# make a backup of the encrypted file
+bakFile = dataFile + '-gpgedit_backup'
+shutil.copy(dataFile, bakFile)
+dstat = os.stat(dataFile)
+
+#  create temporary directory in tmpfs to work from
+# типа супер безопасно, не записываем на диск, можно указать любую папку, но /tmp/gpgedit указать нельзя,
+# любой пользователь может там прочитать пока ты редактируешь
+tmpDir = '/dev/shm/gpgedit'
+
+n = 0
+while True:
+    try:
+        os.mkdir(tmpDir + str(n))
+        break
+    except OSError as err:
+        if err.errno != 17:  # file already exists
+            raise
+    n += 1
+
+tmpDir += str(n)
+
+os.chmod(tmpDir, stat.S_IRUSR | stat.S_IWUSR | stat.S_IXUSR)
+
+try:
+    # decrypt file
+    tmpFile = os.path.join(tmpDir, 'data')
+    cmd = "gpg --decrypt --output %s %s" % (tmpFile, dataFile)
+    proc = subprocess.Popen(cmd, shell=True)
+    if proc.wait() != 0:
+        raise Exception("Ошибка расшифровки файла")
+
+    # record stats of tmp file
+    stat = os.stat(tmpFile)
+
+    # invoke editor
+    exec_command('%s %s' % (editor, tmpFile))
+
+    # see whether data has changed
+    stat2 = os.stat(tmpFile)
+    if stat.st_mtime == stat2.st_mtime and stat.st_size == stat2.st_size:
+        raise Exception("Data unchanged; not writing encrypted file.")
+
+    # re-encrypt, write back to original file
+    cmd = "gpg --yes -e -r %s --output %s %s" % (keyName, dataFile, tmpFile)
+    proc = subprocess.Popen(cmd, shell=True)
+    if proc.wait() != 0:
+        raise Exception("Error encrypting file.")
+except:
+    # If there was an error AND the data file was modified, restore the backup.
+    dstat2 = os.stat(dataFile)
+    if dstat.st_mtime != dstat2.st_mtime or dstat.st_size != dstat2.st_size:
+        print "Error occurred, restored encrypted file from backup."
+        shutil.copy(bakFile, dataFile)
+    raise
+finally:
+    shutil.rmtree(tmpDir)
+    os.remove(bakFile)

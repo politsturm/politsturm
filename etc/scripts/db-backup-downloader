@@ -1,0 +1,57 @@
+#!/usr/bin/env python3
+# coding=utf-8
+import argparse
+import os
+import logging
+from vendor.env import Environment
+from vendor.process import exec_command
+
+project_dir = os.path.abspath(os.path.join(__file__, "../../../"))
+
+# logger
+FORMAT = '%(asctime)-15s %(levelname)s %(message)s'
+logging.basicConfig(format=FORMAT)
+logger = logging.getLogger('main')
+logger.setLevel(logging.DEBUG)
+
+env = Environment.read(project_dir + '/.env')
+
+
+def download_backup(dest_file):
+    ip = env['DB_BACKUP_SERVER_IP']
+    source_file = env['DB_BACKUP_PATH']
+
+    command = "scp 'admin@%s:%s' '%s'" % (ip, source_file, dest_file)
+
+    if os.path.exists(dest_file):
+        logger.debug("Удаляю файл %s" % dest_file)
+        os.remove(dest_file)
+
+    logger.info("Пытаюсь скачать резервную копию")
+    logger.info(command)
+
+    exec_command(command)
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description='''
+        Выкачивает резервные копии БД из хранилища
+    ''',
+        formatter_class=argparse.RawTextHelpFormatter
+    )
+
+    parser.add_argument(
+        '--output-file',
+        help='Сохранить файл по заданому пути',
+        default=project_dir + "/runtime/db_backup.tar.gz",
+        action='store',
+    )
+
+    options = parser.parse_args()
+
+    download_backup(options.output_file)
+
+
+if __name__ == '__main__':
+    main()

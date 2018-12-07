@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+for i in $(find ./etc/env -name '.env.*' -not -name '.env.*.gpg'); do
+    echo "Сортирую: $i"
+
+    sort "$i" -o "$i"
+done

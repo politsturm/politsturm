@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+# coding=utf-8
+
+from __future__ import print_function
+import argparse
+import os
+from datetime import datetime
+from vendor.exceptions import ExistCodeError
+from vendor.process import exec_command
+import logging
+
+# Логирование
+FORMAT = '%(asctime)-15s %(levelname)s %(message)s'
+logging.basicConfig(format=FORMAT)
+logger = logging.getLogger('main')
+logger.setLevel(logging.DEBUG)
+
+root_dir = os.path.abspath(os.path.join(__file__, "../../.."))
+
+try:
+    startTime = datetime.now()
+
+    parser = argparse.ArgumentParser(
+        description='''
+            Инициализируем local окружение
+        ''',
+        formatter_class=argparse.RawTextHelpFormatter
+    )
+
+    parser.add_argument(
+        '-r',
+        default=False,
+        action='store_true',
+        help='Сбрасывать БД'
+    )
+
+    parser.add_argument(
+        '-f',
+        default=False,
+        action='store_true',
+        help='Собирать статику'
+    )
+
+    options = parser.parse_args()
+
+    exec_command("./etc/scripts/init --env=local")
+
+    exec_command("docker-compose up -d --force-recreate")
+
+    exec_command("./etc/scripts/create_composer_repository")
+
+    exec_command("docker-compose exec php composer install --prefer-source")
+
+    exec_command("./etc/scripts/create_symlinks")
+
+    if options.r:
+        exec_command("./etc/scripts/db-reset --force")
+
+    if options.f:
+        exec_command("./etc/scripts/build_frontend")
+
+    print("The script work time: " + str(datetime.now() - startTime))
+except ExistCodeError:
+    print("Ошибка внутреннего скрипта")

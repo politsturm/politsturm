@@ -1,0 +1,46 @@
+#!/usr/bin/env python3
+# coding=utf-8
+import json
+import logging
+import os
+import requests
+
+
+# Логирование
+FORMAT = '%(asctime)-15s %(levelname)s %(message)s'
+logging.basicConfig(format=FORMAT)
+logger = logging.getLogger('main')
+logger.setLevel(logging.DEBUG)
+
+# Корень проекта
+root_dir = os.path.abspath(os.path.join(__file__, "../../.."))
+composer_repository_file = root_dir + "/runtime/packages.json"
+composer_original_file = root_dir + "/composer.json"
+
+logger.info('Формируем файл с локальными composer packages')
+
+composer_repository_data = {
+    'packages': {}
+}
+with open(composer_original_file) as json_file:
+    json_data = json.load(json_file)
+
+    for package, version in json_data['require'].items():
+        if package.startswith('wordpress-plugin'):
+            archive_url = "https://downloads.wordpress.org/plugin/%s.%s.zip" % (package, version)
+
+            request = requests.head(archive_url)
+            logger.debug('Проверяю ссылку %s' % archive_url)
+            if request.status_code == 404:
+                archive_url = "https://downloads.wordpress.org/plugin/%s.zip" % package
+                logger.debug('Вышеуказанный архив недоступен. Используем %s' % archive_url)
+
+            composer_repository_data['packages'][package] = {}
+            composer_repository_data['packages'][package][version] = {
+                "name": package,
+                "version": version,
+                "dist": {"url": archive_url, "type": "zip"}
+            }
+
+    with open(composer_repository_file, 'w') as outfile:
+        json.dump(composer_repository_data, outfile, indent=4)
