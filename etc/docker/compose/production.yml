@@ -5,12 +5,32 @@ version: '3.3'
 volumes:
   mysql_local_db:
 services:
+  proxy:
+    restart: always
+    build: ./etc/docker/services/proxy/build
+    volumes:
+    - ./etc/docker/services/proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+    - ./etc/docker/services/proxy/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+    - .:/var/www
+    ports:
+    - "8012:80"
+    depends_on:
+    - nginx
+    env_file:
+    - .env
+    networks:
+      default:
+        aliases:
+          - politsturm_proxy
+    logging:
+      driver: "syslog"
+      options:
+        syslog-facility: "local0"
+        tag: "docker/politsturm/production/{{.Name}}"
   nginx:
     restart: always
     depends_on:
     - php
-    ports:
-    - "8012:80"
     logging:
       driver: "syslog"
       options:
