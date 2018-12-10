@@ -50,7 +50,8 @@
     "wordpress-plugin/social-networks-auto-poster-facebook-twitter-g": "4.2.8",
     "wordpress-plugin/wp-smushit": "2.9.1",
     "wordpress-plugin/html-on-pages": "1.1",
-    "wordpress-plugin/onesignal-free-web-push-notifications": "1.16.9"
+    "wordpress-plugin/onesignal-free-web-push-notifications": "1.16.9",
+    "wordpress-plugin/nginx-helper": "2.0.1"
   },
   "require-dev": {}
 }
