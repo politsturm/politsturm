@@ -25,8 +25,8 @@ services:
           - politsturm_proxy
   php:
     volumes:
-    - ./etc/docker/services/php/env/development.ini:/usr/local.md/etc/php/conf.d/development.ini:ro
-    - ./etc/docker/services/php/xdebug.ini:/usr/local.md/etc/php/conf.d/xdebug.ini:ro
+    - ./etc/docker/services/php/env/development.ini:/usr/local/etc/php/conf.d/development.ini:ro
+    - ./etc/docker/services/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini:ro
   mysql:
     volumes:
     - mysql_local_db:/var/lib/mysql
