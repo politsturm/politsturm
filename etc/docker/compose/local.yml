@@ -8,10 +8,21 @@ services:
   nginx:
     depends_on:
     - php
-    ports:
-    - "8011:80"
     volumes:
     - ./etc/docker/services/nginx/conf.d/blocks/static_proxy_pass.conf:/etc/nginx/conf.d/blocks/static_proxy_pass.conf
+  proxy:
+    build: ./etc/docker/services/proxy/build
+    volumes:
+      - ./etc/docker/services/proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./etc/docker/services/proxy/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+    - "8011:80"
+    env_file:
+      - .env
+    networks:
+      default:
+        aliases:
+          - politsturm_proxy
   php:
     volumes:
     - ./etc/docker/services/php/env/development.ini:/usr/local.md/etc/php/conf.d/development.ini:ro
