@@ -18,7 +18,7 @@ services:
         aliases:
           - politsturm_nginx
   php:
-    image: registry.gitlab.com/politsturm/politsturm-infrastructure/php:1.0
+    image: registry.gitlab.com/politsturm/politsturm-infrastructure/php:1.0.0
     user: "${USER_UID}:0"
     volumes:
     - ./etc/docker/services/php/php.ini:/usr/local/etc/php/php.ini:ro
@@ -34,7 +34,7 @@ services:
         aliases:
         - politsturm_wordpress
   mysql:
-    image: registry.gitlab.com/politsturm/politsturm-infrastructure/mysql:1.0
+    image: registry.gitlab.com/politsturm/politsturm-infrastructure/mysql:1.0.0
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
