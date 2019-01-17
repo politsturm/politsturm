@@ -36,6 +36,13 @@ exec_command("rm -f '%s'" % config_symlink_destination)
 exec_command("ln -r -f -s '%s' '%s'" % (config_symlink_source, config_symlink_destination))
 logger.debug("link: %s -> %s" % (config_symlink_source, config_symlink_destination))
 
+logger.info("Создаю символическию ссылку на картинки")
+uploads_symlink_source = root_dir + '/runtime/uploads'
+uploads_symlink_destination = wp_dir + '/wp-content/uploads'
+exec_command("rm -f '%s'" % uploads_symlink_destination)
+exec_command("ln -r -f -s '%s' '%s'" % (uploads_symlink_source, uploads_symlink_destination))
+logger.debug("link: %s -> %s" % (uploads_symlink_source, uploads_symlink_destination))
+
 logger.info("Создаю символические ссылкы на плагины")
 for dir in os.listdir( plugins_vendor_dir ):
     plugin_from = plugins_vendor_dir + "/" + dir
