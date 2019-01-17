@@ -24,8 +24,10 @@ FORMAT = '%(asctime)-15s %(levelname)s %(message)s'
 logging.basicConfig(format=FORMAT)
 logger = logging.getLogger('main')
 
+
 def get_user_uid():
     return subprocess.check_output(['id', '-u']).strip().decode("utf-8")
+
 
 def get_real_ip():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -153,3 +155,7 @@ generate_runtime_env_file()
 
 logger.info("Копирую docker-compose файл")
 copy_docker_compose_files()
+
+uploads_dir = "%s/runtime/uploads" % root_dir
+if not os.path.exists(uploads_dir):
+    os.makedirs(uploads_dir)
