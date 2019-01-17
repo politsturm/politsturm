@@ -94,6 +94,15 @@ $table_prefix  = 'wp_';
  */
 define('WP_DEBUG', (bool) getenv('WP_DEBUG'));
 
+// Используем SSL
+define('FORCE_SSL_ADMIN',   true);
+define('FORCE_SSL_LOGIN',   true);
+define('FORCE_SSL_CONTENT', true);
+
+if ($_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
+    $_SERVER['HTTPS']='on';
+}
+
 /* Это всё, дальше не редактируем. Успехов! */
 
 /** Абсолютный путь к директории WordPress. */
