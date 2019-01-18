@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+# coding=utf-8
+
+import logging
+import os
+import shutil
+
+from vendor.process import exec_command
+
+# Логирование
+FORMAT = '%(asctime)-15s %(levelname)s %(message)s'
+logging.basicConfig(format=FORMAT)
+logger = logging.getLogger('main')
+logger.setLevel(logging.DEBUG)
+
+# Корень проекта
+root_dir = os.path.abspath(os.path.join(__file__, "../../.."))
+# Директория WP
+wp_dir = root_dir + "/wordpress"
+# Директория в которой лежат плагины для копирования в WP
+plugins_vendor_dir = root_dir + "/vendor/wordpress-plugin"
+# Директория плагинов WP
+plugins_destination_dir = wp_dir + "/wp-content/plugins"
+# Директория тем WP
+themes_destination_dir = wp_dir + "/wp-content/themes"
+
+project_dir = root_dir + "/wordpress"
+if not os.path.exists(project_dir):
+    logger.info("Копирую wordpress в корень проекта")
+    shutil.copytree(root_dir + "/vendor/wordpress/wordpress", project_dir)
+
+logger.info("Копирую тему в wordpress")
+theme_source_dir = root_dir + '/vendor/politsturm/wordpress-theme'
+theme_destination_dir = themes_destination_dir + '/politsturm'
+if os.path.exists(theme_destination_dir):
+    shutil.rmtree(theme_destination_dir)
+shutil.copytree(theme_source_dir, theme_destination_dir)
+
+logger.info("Копирую конфигурационный файл в wordpress")
+config_source_file = root_dir + '/wp-config.php'
+config_destination_file = wp_dir + '/wp-config.php'
+if os.path.exists(config_destination_file):
+    os.remove(config_destination_file)
+shutil.copy(config_source_file, config_destination_file)
+
+logger.info("Создаю символическию ссылку на директорию с изображениями")
+uploads_symlink_source = root_dir + '/runtime/uploads'
+uploads_symlink_destination = wp_dir + '/wp-content/uploads'
+if os.path.exists(uploads_symlink_destination):
+    os.remove(uploads_symlink_destination)
+exec_command("ln -r -f -s '%s' '%s'" % (uploads_symlink_source, uploads_symlink_destination))
+logger.debug("link: %s -> %s" % (uploads_symlink_source, uploads_symlink_destination))
+
+logger.info("Копирую плагины в wordpress")
+for dir in os.listdir(plugins_vendor_dir):
+    plugin_from = plugins_vendor_dir + "/" + dir
+    plugin_to = plugins_destination_dir + "/" + dir
+    # если есть такая директория - пропускаем. Значит плагин поставили из админки
+    if os.path.exists(plugin_to):
+        shutil.rmtree(plugin_to)
+    shutil.copytree(plugin_from, plugin_to)
+    logger.info("Копирую плагин %s" % dir)

@@ -7,7 +7,7 @@
       "type": "package",
       "package": {
         "name": "wordpress/wordpress",
-        "version": "1.0.0",
+        "version": "4.9.8",
         "dist": {"url": "https://ru.wordpress.org/wordpress-4.9.8-ru_RU.zip", "type": "zip"}
       }
     },
@@ -32,7 +32,7 @@
     }
   ],
   "require": {
-    "wordpress/wordpress": "@stable",
+    "wordpress/wordpress": "4.9.8",
     "politsturm/wordpress-theme": "@stable",
     "wordpress-plugin/admin-menu-editor": "1.8.5",
     "wordpress-plugin/advanced-custom-fields": "5.7.7",

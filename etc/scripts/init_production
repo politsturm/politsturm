@@ -47,7 +47,7 @@ try:
 
     exec_command("docker-compose exec php composer install --prefer-dist")
 
-    exec_command("./etc/scripts/create_symlinks")
+    exec_command("./etc/scripts/copy_project_files")
 
     if options.f:
         exec_command("./etc/scripts/build_frontend")
