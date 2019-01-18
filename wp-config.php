@@ -95,9 +95,9 @@ $table_prefix  = 'wp_';
 define('WP_DEBUG', (bool) getenv('WP_DEBUG'));
 
 // Используем SSL
-define('FORCE_SSL_ADMIN',   true);
-define('FORCE_SSL_LOGIN',   true);
-define('FORCE_SSL_CONTENT', true);
+define('FORCE_SSL_ADMIN',   (bool) getenv('FORCE_SSL_ADMIN'));
+define('FORCE_SSL_LOGIN',   (bool) getenv('FORCE_SSL_LOGIN'));
+define('FORCE_SSL_CONTENT', (bool) getenv('FORCE_SSL_CONTENT'));
 
 if ($_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
     $_SERVER['HTTPS']='on';
